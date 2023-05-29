@@ -18,7 +18,7 @@
         <div class="d-flex align-items-start">
             <img class="ml-5" src="{{ img.link_to_processed_image }}" alt="">
             <div style="margin-top: 100px; padding-right: 200px" class="ml-3 card">
-                <code style="white-space: pre-wrap" class="px-5 py-3 card-text">[{% for box in img.boxes %}
+                <code style="white-space: pre-wrap" class="px-5 py-3 card-text">[{% for box in img.bboxes %}
     {
         "box_class": "{{ box.box_class}}",
         "conf": {{ "{:.02f}".format(box.conf) }},

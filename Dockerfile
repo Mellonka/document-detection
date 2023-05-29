@@ -7,7 +7,10 @@ COPY requirements.txt /app
 WORKDIR /app
 
 RUN pip install --upgrade pip && \
-    pip install --no-cache-dir -r requirements.txt
+    pip install --no-cache-dir -r requirements.txt && \
+    apt-get update &&  \
+    apt-get install ffmpeg libsm6 libxext6  -y
+
 
 EXPOSE 10000
 

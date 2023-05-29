@@ -1,6 +1,7 @@
 from fastapi import FastAPI, Request, UploadFile, File
 from fastapi.templating import Jinja2Templates
 from uuid import uuid4
+from typing import List
 import numpy as np
 import cv2
 from predict_services import predict
@@ -17,7 +18,7 @@ async def root(request: Request):
 
 
 @app.post("/inference")
-async def inference(files: list[UploadFile] = File()):
+async def inference(files: List[UploadFile] = File()):
     img_predicts = await predict(files)
     images = []
     for img_predict, img in zip(img_predicts, files):

@@ -1,5 +1,6 @@
 from fastapi import UploadFile
 from ultralytics import YOLO
+from typing import List, Tuple
 from pydantic import BaseModel
 from PIL import Image
 from io import BytesIO
@@ -9,18 +10,18 @@ from typing import Union
 class Box(BaseModel):
     box_class: str
     conf: float
-    left_top: tuple[int, int]
-    right_bottom: tuple[int, int]
+    left_top: Tuple[int, int]
+    right_bottom: Tuple[int, int]
 
 
 class ImagePredict(BaseModel):
     filename: str
-    bboxes: list[Box]
+    bboxes: List[Box]
     original_image: Union[bytes, None] = None
     link_to_processed_image: Union[str, None] = None
 
 
-async def predict(files: list[UploadFile]) -> list[ImagePredict]:
+async def predict(files: List[UploadFile]) -> List[ImagePredict]:
     model = YOLO('weights.pt')
     predicts = []
     for file in files:

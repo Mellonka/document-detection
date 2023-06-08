@@ -4,7 +4,7 @@ from uuid import uuid4
 from typing import List
 import numpy as np
 import cv2
-from predict_services import predict
+from predict_services import predict, ImagePredict
 from cv2_services import draw_text
 from S3_services import upload_object
 
@@ -17,7 +17,6 @@ async def root(request: Request):
     return templates.TemplateResponse("index.html", {"request": request})
 
 
-@app.post("/inference")
 async def inference(files: List[UploadFile] = File()):
     img_predicts = await predict(files)
     images = []
@@ -33,4 +32,15 @@ async def inference(files: List[UploadFile] = File()):
         img_predict.link_to_processed_image = await upload_object(file_key, image_as_bytes)
         img_predict.original_image = None
         images.append(img_predict)
+    return images
+
+
+@app.post("/inference-template")
+async def inference_to_template(files: List[UploadFile] = File()):
+    images = await inference(files)
     return templates.TemplateResponse("index.html", {"request": {}, "images": images})
+
+
+@app.post("/inference-json")
+async def inference_to_json(files: List[UploadFile] = File()) -> List[ImagePredict]:
+    return await inference(files)

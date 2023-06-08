@@ -27,9 +27,10 @@ async def predict(files: List[UploadFile]) -> List[ImagePredict]:
     for file in files:
         img_bytes = await file.read()
         img = Image.open(BytesIO(img_bytes))
-        result = model.predict(img, conf=0.35)
+        result = model.predict(img, conf=0.20)
         boxes = []
-        for conf, cls, xyxy in zip(result[0].boxes.conf.tolist(), result[0].boxes.cls.tolist(), result[0].boxes.xyxy.tolist()):
+        for conf, cls, xyxy in zip(result[0].boxes.conf.tolist(), result[0].boxes.cls.tolist(),
+                                   result[0].boxes.xyxy.tolist()):
             left_top = (xyxy[0], xyxy[1])
             right_bottom = (xyxy[2], xyxy[3])
             boxes.append(Box(left_top=left_top,

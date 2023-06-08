@@ -5,13 +5,19 @@
     <h1 class="py-5 ">Разметка документа</h1>
     <div class="d-flex gap-5 align-items-start">
         <form action="/inference-template" enctype="multipart/form-data" class="px-5 py-4 border" name="form" method="post"
-              style="width: 500px">
+              style="width: 500px" >
             <label class="h4 mb-3" for="fileInput">Выберите файлы</label>
-            <input id="fileInput" name="files" class="form-control mb-3" type="file" multiple>
+            <input id="fileInput" name="files" accept="image/*" class="form-control mb-3" type="file" multiple>
             <input class="btn btn-primary" type="submit">
         </form>
         <p class="h4">Классы, которые мы детектируем: QR-код, BAR-код, изображение, логотип, подпись, печать, таблица, графики</p>
     </div>
+    {% if error %}
+    <div class="mt-4 alert alert-danger" role="alert">
+        {{ error }}
+    </div>
+    {% endif %}
+
     {% if images %}
     <div class="p-5 d-flex gap-3 flex-wrap">
         {% for img in images %}

@@ -4,6 +4,7 @@ from uuid import uuid4
 from typing import List
 import numpy as np
 import cv2
+import PIL
 from predict_services import predict, ImagePredict
 from cv2_services import draw_text
 from S3_services import upload_object
@@ -37,10 +38,17 @@ async def inference(files: List[UploadFile] = File()):
 
 @app.post("/inference-template")
 async def inference_to_template(files: List[UploadFile] = File()):
-    images = await inference(files)
+    try:
+        images = await inference(files)
+    except PIL.UnidentifiedImageError:
+        return templates.TemplateResponse("index.html", {"request": {}, "error": "Вы загрузили не изображение!"})
     return templates.TemplateResponse("index.html", {"request": {}, "images": images})
 
 
 @app.post("/inference-json")
-async def inference_to_json(files: List[UploadFile] = File()) -> List[ImagePredict]:
-    return await inference(files)
+async def inference_to_json(files: List[UploadFile] = File()) -> List[ImagePredict] | dict:
+    try:
+        results = await inference(files)
+    except PIL.UnidentifiedImageError:
+        return {"error": "Вы загрузили не изображения!"}
+    return results

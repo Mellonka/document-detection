@@ -27,7 +27,7 @@
                 <code style="white-space: pre-wrap" class="px-5 py-3 card-text">[{% for box in img.bboxes %}
     {
         "box_class": "{{ box.box_class}}",
-        "conf": {{ "{:.02f}".format(box.conf) }},
+        "conf": {{ box.conf }},
         "x": {{ box.left_top[0] }},
         "y": {{ box.left_top[1] }},
         "width": {{ box.right_bottom[0] - box.left_top[0] }},

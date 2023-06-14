@@ -2,15 +2,15 @@
 
 {% block body %}
 <div class="container mt-5">
-    <h1 class="py-5 ">Разметка документа</h1>
+    <h1 class="py-5 mx-5">Разметка документа</h1>
     <div class="d-flex gap-5 align-items-start">
         <form action="/inference-template" enctype="multipart/form-data" class="px-5 py-4 border" name="form" method="post"
               style="width: 500px" >
             <label class="h4 mb-3" for="fileInput">Выберите файлы</label>
-            <input id="fileInput" name="files" accept="image/*" class="form-control mb-3" type="file" multiple>
+            <input id="fileInput" name="files" accept="image/*,application/pdf" class="form-control mb-3" type="file" multiple>
             <input class="btn btn-primary" type="submit">
         </form>
-        <p class="h4">Классы, которые мы детектируем: QR-код, BAR-код, изображение, логотип, подпись, печать, таблица, графики</p>
+        <p class="h4 mx-5 mt-3" style="width: 400px">Классы, которые мы детектируем: QR-код, BAR-код, изображение, логотип, подпись, печать, таблица, графики</p>
     </div>
     {% if error %}
     <div class="mt-4 alert alert-danger" role="alert">
@@ -18,20 +18,25 @@
     </div>
     {% endif %}
 
-    {% if images %}
-    <div class="p-5 d-flex gap-3 flex-wrap">
-        {% for img in images %}
-        <div class="d-flex align-items-start">
-            <img class="ml-5" src="{{ img.link_to_processed_image }}" alt="">
-            <div style="margin-top: 100px; padding-right: 200px" class="ml-3 card">
-                <code style="white-space: pre-wrap" class="px-5 py-3 card-text">[{% for box in img.bboxes %}
+    {% if annotations %}
+    <div class="p-2 mt-5 d-flex gap-5 flex-wrap">
+        <a class="h4 btn btn-primary" href="{{ annotations_file }}" download>Скачать json файл с аннотацией</a>
+        {% for annotation in annotations %}
+        <div class="container d-flex p-3 align-items-start" style="background-color: #eee">
+            <img class="ml-5" src="{{ annotation.link_to_processed_image }}" alt="">
+            <div style="padding-right: 200px; margin-top: 20px; margin-left: 10px;" class="card">
+                <code style="white-space: pre-wrap" class="px-5 py-3 card-text">[{% for box in annotation.bboxes %}
     {
         "box_class": "{{ box.box_class}}",
         "conf": {{ box.conf }},
-        "x": {{ box.left_top[0] }},
-        "y": {{ box.left_top[1] }},
-        "width": {{ box.right_bottom[0] - box.left_top[0] }},
-        "height": {{ box.right_bottom[1] - box.left_top[1] }}
+        "left_top": [
+            {{ box.left_top[0] }},
+            {{ box.left_top[1] }}
+        ],
+        "right_bottom": [
+            {{ box.right_bottom[0] }},
+            {{ box.right_bottom[1] }}
+        ]
     },{% endfor %}
 ]</code>
             </div>

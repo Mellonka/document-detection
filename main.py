@@ -1,7 +1,6 @@
 from fastapi import FastAPI, Request, UploadFile, File
 from fastapi.staticfiles import StaticFiles
 from fastapi.templating import Jinja2Templates
-from uuid import uuid4
 from typing import List
 from PIL import ImageDraw, Image, ImageFont, UnidentifiedImageError
 from services import predict, save_or_upload, draw_text

@@ -26,3 +26,8 @@ pip install -r requirements.txt --no-cache-dir
 uvicorn main:app
 ```
 6. Приложение откроется по ссылке - http://localhost:8000
+
+
+### Пример работы
+
+![пример работы](https://github.com/Mellonka/detection-on-document/raw/main/static/inferences/example.jpg)

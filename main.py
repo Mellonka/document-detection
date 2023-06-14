@@ -31,7 +31,7 @@ async def inference(files: List[UploadFile] = File()):
         image = image.convert('RGB')
         draw = ImageDraw.Draw(image)
         for box in img_predict.bboxes:
-            draw.rectangle((*box.left_top, *box.right_bottom), outline='red', width=3)
+            draw.rectangle((*box.left_top, *box.right_bottom), outline='red', width=4)
             text = f"{box.box_class} {box.conf}"
             x, y = box.left_top[0], box.right_bottom[1]
             draw_text(draw, font, text, x, y)
